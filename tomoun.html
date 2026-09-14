@@ -1,0 +1,967 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PLEŠ & SYN™ — Barber Studio</title>
+<style>
+    * { box-sizing: border-box; }
+
+    :root {
+        --acid: #d9ff00;
+        --pink: #ff2fb3;
+        --blue: #00eaff;
+        --red: #ff2b2b;
+        --black: #050505;
+        --white: #f7f7f7;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+        margin: 0;
+        background:
+            radial-gradient(circle at 20% 10%, rgba(255,47,179,.2), transparent 25%),
+            radial-gradient(circle at 80% 30%, rgba(0,234,255,.15), transparent 25%),
+            repeating-linear-gradient(
+                0deg,
+                #080808 0 2px,
+                #0c0c0c 2px 4px
+            );
+        color: var(--white);
+        font-family: Arial, Helvetica, sans-serif;
+        overflow-x: hidden;
+        cursor: none;
+    }
+
+    body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 9997;
+        opacity: .16;
+        background-image:
+            linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
+        background-size: 3px 3px;
+        mix-blend-mode: screen;
+    }
+
+    .noise {
+        position: fixed;
+        inset: 0;
+        z-index: 9996;
+        pointer-events: none;
+        opacity: .06;
+        background:
+            repeating-radial-gradient(circle at 30% 20%, #fff 0 1px, transparent 1px 4px);
+        animation: noiseMove .15s steps(2) infinite;
+    }
+
+    @keyframes noiseMove {
+        0% { transform: translate(0,0); }
+        25% { transform: translate(2px,-2px); }
+        50% { transform: translate(-1px,2px); }
+        75% { transform: translate(1px,1px); }
+        100% { transform: translate(0,0); }
+    }
+
+    .ticker {
+        position: fixed;
+        top: -1px;
+        left: 0;
+        z-index: 9999;
+        width: 100%;
+        background: var(--acid);
+        color: #000;
+        border-bottom: 3px solid #000;
+        overflow: hidden;
+        white-space: nowrap;
+        font-weight: 900;
+        font-size: 14px;
+        letter-spacing: .8px;
+        padding: 7px 0;
+        transform: rotate(-.25deg);
+    }
+
+    .ticker span {
+        display: inline-block;
+        min-width: 200%;
+        animation: ticker 12s linear infinite;
+    }
+
+    @keyframes ticker {
+        from { transform: translateX(0); }
+        to { transform: translateX(-50%); }
+    }
+
+    header {
+        position: relative;
+        min-height: 100vh;
+        padding: 80px 4vw 40px;
+        display: grid;
+        align-items: center;
+        overflow: hidden;
+    }
+
+    .stamp {
+        position: absolute;
+        right: 4vw;
+        top: 90px;
+        background: var(--red);
+        color: #fff;
+        border: 4px solid #fff;
+        padding: 10px 14px;
+        font-weight: 900;
+        transform: rotate(8deg);
+        box-shadow: 7px 7px 0 #000;
+        z-index: 5;
+    }
+
+    .hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1.05fr) minmax(280px, .95fr);
+        gap: 4vw;
+        align-items: center;
+    }
+
+    .hero-copy h1 {
+        margin: 0;
+        font-size: clamp(58px, 11vw, 180px);
+        line-height: .72;
+        text-transform: uppercase;
+        letter-spacing: -8px;
+        font-weight: 1000;
+        text-shadow:
+            7px 7px 0 var(--pink),
+            -5px -5px 0 var(--blue);
+        transform: skewY(-3deg);
+        animation: titleWobble 1.8s ease-in-out infinite alternate;
+    }
+
+    @keyframes titleWobble {
+        from { transform: skewY(-3deg) translateX(-4px); }
+        to { transform: skewY(-1deg) translateX(5px); }
+    }
+
+    .hero-copy p {
+        max-width: 680px;
+        margin: 28px 0;
+        font-size: clamp(18px, 2.2vw, 34px);
+        font-weight: 900;
+        text-transform: uppercase;
+        line-height: 1;
+    }
+
+    .badges {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .badge {
+        background: #fff;
+        color: #000;
+        border: 3px solid #000;
+        padding: 9px 12px;
+        font-weight: 900;
+        box-shadow: 5px 5px 0 var(--pink);
+        transform: rotate(var(--r));
+    }
+
+    .hero-photo-wrap {
+        position: relative;
+        display: grid;
+        place-items: center;
+        min-height: 560px;
+        perspective: 1000px;
+    }
+
+    .hero-photo {
+        width: min(82vw, 520px);
+        aspect-ratio: 1 / 1.08;
+        border-radius: 49% 51% 46% 54% / 58% 46% 54% 42%;
+        border: 10px solid var(--acid);
+        overflow: hidden;
+        background:
+            radial-gradient(circle at 50% 35%, #f3c6aa 0 17%, transparent 17.5%),
+            radial-gradient(circle at 50% 41%, #e7b091 0 25%, transparent 25.5%),
+            linear-gradient(145deg, #202020, #777);
+        box-shadow:
+            0 0 0 8px #000,
+            20px 20px 0 var(--pink),
+            -22px -20px 0 var(--blue);
+        animation: floatHead 3.5s ease-in-out infinite;
+        transform: rotate(-3deg);
+    }
+
+    .hero-photo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: saturate(1.45) contrast(1.13) brightness(1.03);
+        transform: scale(1.18);
+    }
+
+    @keyframes floatHead {
+        0%, 100% { transform: rotate(-3deg) translateY(0) scale(1); }
+        50% { transform: rotate(2deg) translateY(-14px) scale(1.03); }
+    }
+
+    .fisheye {
+        position: absolute;
+        width: 75%;
+        height: 75%;
+        border: 4px solid rgba(255,255,255,.5);
+        border-radius: 50%;
+        pointer-events: none;
+        box-shadow:
+            inset 0 0 50px rgba(255,255,255,.22),
+            0 0 60px rgba(0,0,0,.7);
+        backdrop-filter: blur(.35px);
+        animation: fisheyePulse 2.4s infinite ease-in-out;
+    }
+
+    @keyframes fisheyePulse {
+        50% { transform: scale(1.07) rotate(4deg); }
+    }
+
+    .photo-label {
+        position: absolute;
+        bottom: 30px;
+        left: 0;
+        background: var(--blue);
+        color: #000;
+        font-weight: 1000;
+        font-size: clamp(18px, 2vw, 28px);
+        padding: 8px 14px;
+        border: 4px solid #000;
+        transform: rotate(-8deg);
+    }
+
+    .arrow {
+        position: absolute;
+        right: -10px;
+        bottom: 90px;
+        font-size: 72px;
+        animation: arrowSpin .7s steps(2) infinite;
+    }
+
+    @keyframes arrowSpin {
+        50% { transform: rotate(15deg) scale(1.2); }
+    }
+
+    section {
+        padding: 90px 4vw;
+        border-top: 6px dashed rgba(255,255,255,.5);
+        position: relative;
+    }
+
+    .section-title {
+        font-size: clamp(46px, 8vw, 118px);
+        line-height: .84;
+        text-transform: uppercase;
+        margin: 0 0 50px;
+        letter-spacing: -5px;
+        font-weight: 1000;
+    }
+
+    .section-title em {
+        color: var(--acid);
+        font-style: normal;
+        text-decoration: underline wavy var(--pink);
+    }
+
+    .services-grid {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        gap: 14px;
+    }
+
+    .service {
+        min-height: 190px;
+        padding: 20px;
+        border: 4px solid #000;
+        box-shadow: 8px 8px 0 #000;
+        font-weight: 900;
+        color: #000;
+        transform: rotate(var(--rot));
+        transition: .18s;
+    }
+
+    .service:hover {
+        transform: rotate(0deg) translateY(-8px) scale(1.03);
+        box-shadow: 15px 15px 0 #000;
+    }
+
+    .service h3 {
+        margin: 0 0 14px;
+        font-size: clamp(28px, 3vw, 50px);
+        line-height: .9;
+        text-transform: uppercase;
+    }
+
+    .service:nth-child(1) { grid-column: span 5; background: var(--acid); }
+    .service:nth-child(2) { grid-column: span 4; background: var(--pink); }
+    .service:nth-child(3) { grid-column: span 3; background: var(--blue); }
+    .service:nth-child(4) { grid-column: span 7; background: #fff; }
+    .service:nth-child(5) { grid-column: span 5; background: #ff7a00; }
+
+    .team {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 28px;
+    }
+
+    .person {
+        position: relative;
+        background: #111;
+        border: 5px solid #fff;
+        padding: 12px;
+        transform: rotate(var(--rot));
+        transition: .2s;
+        box-shadow: 12px 12px 0 var(--shadow);
+    }
+
+    .person:hover {
+        transform: rotate(0deg) scale(1.04);
+        z-index: 2;
+    }
+
+    .person .pic {
+        aspect-ratio: 4/5;
+        background:
+            linear-gradient(135deg, rgba(255,255,255,.05), rgba(255,255,255,.15)),
+            repeating-linear-gradient(
+                45deg,
+                #222 0 10px,
+                #333 10px 20px
+            );
+        overflow: hidden;
+        position: relative;
+    }
+
+    .person .pic::after {
+        content: "SEM DEJ FOTO";
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        color: #777;
+        font-weight: 1000;
+        font-size: 26px;
+        transform: rotate(-12deg);
+    }
+
+    .person img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        position: relative;
+        z-index: 1;
+        filter: contrast(1.1) saturate(1.25);
+    }
+
+    .person h3 {
+        font-size: 38px;
+        margin: 14px 0 2px;
+        text-transform: uppercase;
+    }
+
+    .person small {
+        display: block;
+        font-size: 15px;
+        color: #aaa;
+        font-weight: 900;
+        text-transform: uppercase;
+    }
+
+    .stats {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 14px;
+    }
+
+    .stat {
+        border: 4px dotted #fff;
+        padding: 26px 16px;
+        text-align: center;
+        background: rgba(255,255,255,.04);
+    }
+
+    .stat strong {
+        display: block;
+        font-size: clamp(40px, 7vw, 100px);
+        color: var(--acid);
+        line-height: 1;
+    }
+
+    .stat span {
+        font-weight: 900;
+        text-transform: uppercase;
+    }
+
+    .cta {
+        min-height: 520px;
+        display: grid;
+        place-items: center;
+        text-align: center;
+        background:
+            repeating-conic-gradient(
+                from 0deg,
+                #000 0 10deg,
+                #222 10deg 20deg
+            );
+    }
+
+    .cta-box {
+        background: var(--pink);
+        color: #000;
+        padding: 35px;
+        border: 8px solid #000;
+        box-shadow: 18px 18px 0 var(--acid);
+        transform: rotate(-2deg);
+        max-width: 880px;
+    }
+
+    .cta h2 {
+        font-size: clamp(42px, 8vw, 100px);
+        margin: 0 0 20px;
+        line-height: .83;
+        text-transform: uppercase;
+    }
+
+    .button {
+        display: inline-block;
+        text-decoration: none;
+        background: #fff;
+        color: #000;
+        border: 4px solid #000;
+        padding: 15px 24px;
+        font-weight: 1000;
+        font-size: 24px;
+        box-shadow: 8px 8px 0 #000;
+        transition: .1s;
+    }
+
+    .button:hover {
+        transform: translate(8px,8px);
+        box-shadow: 0 0 0 #000;
+    }
+
+    .popup {
+        position: fixed;
+        left: 18px;
+        bottom: 18px;
+        z-index: 9998;
+        width: min(350px, calc(100vw - 36px));
+        background: #dcdcdc;
+        color: #000;
+        border: 3px solid #000;
+        box-shadow: 7px 7px 0 rgba(0,0,0,.8);
+        font-family: "Courier New", monospace;
+        animation: popupShake 2.2s infinite;
+    }
+
+    .popup-top {
+        background: #001a7a;
+        color: #fff;
+        padding: 5px 8px;
+        font-weight: 900;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .popup-body {
+        padding: 14px;
+        font-weight: 700;
+    }
+
+    .popup button {
+        font: inherit;
+        font-weight: 900;
+        padding: 5px 13px;
+        border: 2px solid #000;
+        background: #eee;
+        cursor: pointer;
+    }
+
+    @keyframes popupShake {
+        0%, 90%, 100% { transform: translate(0,0); }
+        92% { transform: translate(3px,-2px); }
+        94% { transform: translate(-3px,2px); }
+        96% { transform: translate(2px,1px); }
+    }
+
+    .cursor {
+        position: fixed;
+        width: 58px;
+        height: 66px;
+        z-index: 10000;
+        pointer-events: none;
+        transform: translate(-50%, -50%) rotate(-5deg);
+        filter: drop-shadow(4px 6px 0 rgba(0,0,0,.55));
+    }
+
+    .cursor-head {
+        position: absolute;
+        left: 12px;
+        top: 0;
+        width: 34px;
+        height: 34px;
+        border: 2px solid #000;
+        border-radius: 48% 52% 46% 54% / 42% 44% 56% 58%;
+        background:
+            radial-gradient(circle at 38% 46%, #161616 0 2px, transparent 2.4px),
+            radial-gradient(circle at 66% 46%, #161616 0 2px, transparent 2.4px),
+            radial-gradient(circle at 52% 62%, #c98268 0 2px, transparent 2.5px),
+            linear-gradient(#efc1a7, #dca181);
+        box-shadow:
+            inset 0 -5px 0 rgba(0,0,0,.06),
+            inset 7px 2px 10px rgba(255,255,255,.1);
+    }
+
+    .cursor-head::before,
+    .cursor-head::after {
+        content: "";
+        position: absolute;
+        top: 15px;
+        width: 7px;
+        height: 11px;
+        background: #dda383;
+        border: 2px solid #000;
+        border-radius: 50%;
+        z-index: -1;
+    }
+
+    .cursor-head::before {
+        left: -6px;
+    }
+
+    .cursor-head::after {
+        right: -6px;
+    }
+
+    .cursor-shine {
+        position: absolute;
+        left: 8px;
+        top: 5px;
+        width: 12px;
+        height: 7px;
+        border-radius: 50%;
+        background: rgba(255,255,255,.6);
+        transform: rotate(-22deg);
+    }
+
+    .cursor-brow-left,
+    .cursor-brow-right {
+        position: absolute;
+        top: 14px;
+        width: 8px;
+        height: 2px;
+        background: #111;
+        z-index: 6;
+    }
+
+    .cursor-brow-left {
+        left: 6px;
+        transform: rotate(-10deg);
+    }
+
+    .cursor-brow-right {
+        right: 6px;
+        transform: rotate(10deg);
+    }
+
+
+    .cursor-head .eye-left,
+    .cursor-head .eye-right {
+        position: absolute;
+        top: 17px;
+        width: 4px;
+        height: 3px;
+        background: #e8ddd6;
+        border: 1px solid #1a1a1a;
+        border-radius: 50%;
+        z-index: 7;
+    }
+
+    .cursor-head .eye-left {
+        left: 8px;
+    }
+
+    .cursor-head .eye-right {
+        right: 8px;
+    }
+
+    .cursor-head .eye-left::after,
+    .cursor-head .eye-right::after {
+        content: "";
+        position: absolute;
+        left: 1px;
+        top: .5px;
+        width: 1.5px;
+        height: 1.5px;
+        background: #171717;
+        border-radius: 50%;
+    }
+
+    .cursor-facebeard {
+        position: absolute;
+        left: 3px;
+        top: 22px;
+        width: 28px;
+        height: 12px;
+        background:
+            repeating-linear-gradient(
+                90deg,
+                #17100d 0 2px,
+                #2b1d17 2px 4px
+            );
+        clip-path: polygon(
+            0 22%,
+            12% 0,
+            28% 18%,
+            36% 62%,
+            64% 62%,
+            72% 18%,
+            88% 0,
+            100% 22%,
+            90% 82%,
+            72% 100%,
+            28% 100%,
+            10% 82%
+        );
+        border-radius: 35% 35% 45% 45%;
+        z-index: 2;
+        opacity: .98;
+    }
+
+    .cursor-moustache {
+        position: absolute;
+        left: 6px;
+        top: 22px;
+        width: 22px;
+        height: 8px;
+        z-index: 5;
+    }
+
+    .cursor-moustache::before,
+    .cursor-moustache::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        width: 13px;
+        height: 7px;
+        background: #1f1511;
+        border-radius: 75% 25% 60% 40%;
+        box-shadow: inset 0 -1px 0 rgba(255,255,255,.06);
+    }
+
+    .cursor-moustache::before {
+        left: 0;
+        transform: rotate(18deg);
+        border-bottom-left-radius: 90% 90%;
+    }
+
+    .cursor-moustache::after {
+        right: 0;
+        transform: scaleX(-1) rotate(18deg);
+        border-bottom-left-radius: 90% 90%;
+    }
+
+    .cursor-beard {
+        position: absolute;
+        left: 8px;
+        top: 27px;
+        width: 42px;
+        height: 32px;
+        background:
+            repeating-linear-gradient(
+                82deg,
+                #1a120f 0 3px,
+                #2a1c16 3px 6px
+            );
+        border: 2px solid #000;
+        border-top: 0;
+        clip-path: polygon(
+            9% 0,
+            91% 0,
+            95% 16%,
+            92% 30%,
+            86% 48%,
+            79% 62%,
+            69% 76%,
+            59% 88%,
+            52% 100%,
+            48% 100%,
+            41% 88%,
+            31% 76%,
+            21% 62%,
+            14% 48%,
+            8% 30%,
+            5% 16%
+        );
+        z-index: -1;
+    }
+
+    .cursor-beard::before {
+        content: "";
+        position: absolute;
+        left: 8px;
+        top: -6px;
+        width: 24px;
+        height: 8px;
+        background: #211712;
+        border-radius: 0 0 60% 60%;
+    }
+
+    .cursor-shirt {
+        position: absolute;
+        left: 2px;
+        top: 44px;
+        width: 54px;
+        height: 22px;
+        background: #c91f1f;
+        border: 2px solid #000;
+        border-radius: 13px 13px 3px 3px;
+        z-index: -2;
+        overflow: hidden;
+    }
+
+    .cursor-shirt::before {
+        content: "";
+        position: absolute;
+        left: 18px;
+        top: 0;
+        width: 10px;
+        height: 2px;
+        background: #dda383;
+        border: 2px solid #000;
+        border-top: 0;
+        border-radius: 0 0 4px 4px;
+        z-index: 3;
+    }
+
+    .cursor-shirt::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+            linear-gradient(125deg, #fff 0 8%, transparent 8% 100%),
+            linear-gradient(125deg, transparent 0 8%, #fff 8% 12%, transparent 12% 100%),
+            linear-gradient(125deg, transparent 0 14%, #fff 14% 18%, transparent 18% 100%),
+            linear-gradient(125deg, transparent 0 20%, #fff 20% 24%, transparent 24% 100%),
+            linear-gradient(-125deg, #fff 0 8%, transparent 8% 100%),
+            linear-gradient(-125deg, transparent 0 8%, #fff 8% 12%, transparent 12% 100%),
+            linear-gradient(-125deg, transparent 0 14%, #fff 14% 18%, transparent 18% 100%),
+            linear-gradient(-125deg, transparent 0 20%, #fff 20% 24%, transparent 24% 100%);
+        background-repeat: no-repeat;
+        opacity: .98;
+        z-index: 1;
+        pointer-events: none;
+    }
+
+    .floating-word {
+        position: fixed;
+        z-index: -1;
+        font-size: 30px;
+        font-weight: 1000;
+        color: rgba(255,255,255,.07);
+        animation: drift 8s linear infinite;
+        pointer-events: none;
+    }
+
+    @keyframes drift {
+        0% { transform: translateY(110vh) rotate(0deg); }
+        100% { transform: translateY(-20vh) rotate(540deg); }
+    }
+
+    footer {
+        padding: 32px 4vw 70px;
+        font-weight: 900;
+        text-transform: uppercase;
+        font-size: 14px;
+        color: #888;
+    }
+
+    @media (max-width: 900px) {
+        .hero { grid-template-columns: 1fr; }
+        .hero-copy h1 { letter-spacing: -4px; }
+        .hero-photo-wrap { min-height: 450px; }
+        .services-grid { display: block; }
+        .service { margin-bottom: 16px; }
+        .team { grid-template-columns: 1fr; }
+        .stats { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 560px) {
+        .stats { grid-template-columns: 1fr; }
+        .stamp { display: none; }
+        .hero-copy h1 { font-size: 70px; }
+        .popup { width: 280px; }
+    }
+</style>
+</head>
+<body>
+
+<div class="noise"></div>
+<div class="cursor" id="cursor">
+    <div class="cursor-head">
+        <div class="cursor-shine"></div>
+        <div class="cursor-brow-left"></div>
+        <div class="cursor-brow-right"></div>
+        <div class="eye-left"></div>
+        <div class="eye-right"></div>
+        <div class="cursor-facebeard"></div>
+        <div class="cursor-moustache"></div>
+    </div>
+    <div class="cursor-beard"></div>
+    <div class="cursor-shirt"></div>
+</div>
+
+<div class="stamp">★★★★★<br>2.1 / 5 GOOGLE REVIEWS</div>
+
+<header>
+    <div class="hero">
+        <div class="hero-copy">
+            <h1>PLEŠ<br>& SYN™</h1>
+            <p>Prémiové barber studio pro lidi, kterým už je úplně jedno, co se stane s jejich hlavou.</p>
+            <div class="badges">
+                <span class="badge" style="--r:-3deg">100% LEGÁLNÍ</span>
+                <span class="badge" style="--r:4deg">0% GARANCE</span>
+                <span class="badge" style="--r:-7deg">BARBER OD 2024</span>
+                <span class="badge" style="--r:2deg">FISHEYE CERTIFIED</span>
+            </div>
+        </div>
+
+        <div class="hero-photo-wrap">
+            <div class="hero-photo">
+                <img src="friend-bald.jpeg" alt="Kamarád ostříhaný na plešato" onerror="this.style.display='none'">
+            </div>
+            <div class="fisheye"></div>
+            <div class="photo-label">HLAVNÍ DŮKAZ KVALITY</div>
+            <div class="arrow">↙</div>
+        </div>
+    </div>
+</header>
+
+<section>
+    <h2 class="section-title">CO UMÍME <em>POKAZIT</em></h2>
+    <div class="services-grid">
+        <article class="service" style="--rot:-2deg">
+            <h3>Fade</h3>
+            <p>Začneme sebevědomě. Zbytek záleží na štěstí.</p>
+        </article>
+        <article class="service" style="--rot:3deg">
+            <h3>Pleš</h3>
+            <p>Naše signature služba. Prakticky nejbezpečnější možnost.</p>
+        </article>
+        <article class="service" style="--rot:-4deg">
+            <h3>Vousy</h3>
+            <p>Symetrie je jen společenský konstrukt.</p>
+        </article>
+        <article class="service" style="--rot:1deg">
+            <h3>“Jen konečky”</h3>
+            <p>Řekni poslední sbohem vlasům, které máš rád.</p>
+        </article>
+        <article class="service" style="--rot:5deg">
+            <h3>Mystery cut</h3>
+            <p>Neříkáš nic. My taky ne. Pak se podíváš do zrcadla.</p>
+        </article>
+    </div>
+</section>
+
+<section id="team">
+    <h2 class="section-title">NÁŠ <em>TÝM</em></h2>
+
+    <div class="team">
+        <article class="person" style="--rot:-3deg; --shadow:#ff2fb3">
+            <div class="pic">
+                <img src="employee-1.jpg" alt="Zaměstnanec 1" onerror="this.style.display='none'">
+            </div>
+            <h3>ROBERT</h3>
+            <small>CEO / nůžky držel už několikrát</small>
+        </article>
+
+        <article class="person" style="--rot:2deg; --shadow:#d9ff00">
+            <div class="pic">
+                <img src="employee-2.jpg" alt="Zaměstnanec 2" onerror="this.style.display='none'">
+            </div>
+            <h3>KÁMOŠ #2</h3>
+            <small>Senior fade engineer</small>
+        </article>
+
+        <article class="person" style="--rot:-1deg; --shadow:#00eaff">
+            <div class="pic">
+                <img src="employee-3.jpg" alt="Zaměstnanec 3" onerror="this.style.display='none'">
+            </div>
+            <h3>KÁMOŠ #3</h3>
+            <small>Head of irreversible decisions</small>
+        </article>
+    </div>
+</section>
+
+<section>
+    <h2 class="section-title">FIREMNÍ <em>ČÍSLA</em></h2>
+    <div class="stats">
+        <div class="stat"><strong>3</strong><span>spokojené mámy</span></div>
+        <div class="stat"><strong>86%</strong><span>zákazníků nosí čepici</span></div>
+        <div class="stat"><strong>1</strong><span>strojek z Temu</span></div>
+        <div class="stat"><strong>0</strong><span>profesionálních licencí</span></div>
+    </div>
+</section>
+
+<section class="cta">
+    <div class="cta-box">
+        <h2>REZERVUJ SI CHYBU</h2>
+        <p>Termín, po kterém už nebude cesta zpět.</p>
+        <a class="button" href="mailto:rezervace@example.com">OBJEDNAT SE</a>
+    </div>
+</section>
+
+<footer>
+    PLEŠ & SYN™ — všechny střihy jsou prováděny na vlastní nebezpečí.
+</footer>
+
+<script>
+    const cursor = document.getElementById("cursor");
+
+    window.addEventListener("mousemove", e => {
+        cursor.style.left = e.clientX + "px";
+        cursor.style.top = e.clientY + "px";
+    });
+
+    const words = ["PLEŠ", "FADE?", "HELP", "✂", "BRO", "TRUST ME", "💈"];
+
+    for (let i = 0; i < 18; i++) {
+        const span = document.createElement("span");
+        span.className = "floating-word";
+        span.textContent = words[Math.floor(Math.random() * words.length)];
+        span.style.left = Math.random() * 100 + "vw";
+        span.style.animationDelay = (-Math.random() * 8) + "s";
+        span.style.animationDuration = (6 + Math.random() * 8) + "s";
+        document.body.appendChild(span);
+    }
+
+    document.querySelectorAll(".person, .service").forEach(el => {
+        el.addEventListener("mousemove", e => {
+            const r = el.getBoundingClientRect();
+            const x = (e.clientX - r.left) / r.width - .5;
+            const y = (e.clientY - r.top) / r.height - .5;
+            el.style.transform = `rotate(${x * 3}deg) translate(${x * 6}px, ${y * 6}px)`;
+        });
+
+        el.addEventListener("mouseleave", () => {
+            el.style.transform = "";
+        });
+    });
+
+    setInterval(() => {
+        document.body.style.filter = Math.random() > .92 ? "hue-rotate(18deg)" : "none";
+    }, 700);
+</script>
+
+</body>
+</html>
