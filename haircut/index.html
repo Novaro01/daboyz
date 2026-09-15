@@ -802,6 +802,17 @@
         .hero-copy h1 { font-size: 70px; }
         .popup { width: 280px; }
     }
+
+    @media (hover: none), (pointer: coarse) {
+        body {
+            cursor: auto;
+        }
+
+        .cursor {
+            display: none;
+        }
+    }
+
 </style>
 </head>
 <body>
@@ -957,10 +968,6 @@
             el.style.transform = "";
         });
     });
-
-    setInterval(() => {
-        document.body.style.filter = Math.random() > .92 ? "hue-rotate(18deg)" : "none";
-    }, 700);
 </script>
 
 </body>
