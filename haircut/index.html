@@ -130,7 +130,6 @@
         margin: 0;
         font-size: clamp(58px, 11vw, 180px);
         line-height: .72;
-        text-transform: uppercase;
         letter-spacing: -8px;
         font-weight: 1000;
         text-shadow:
@@ -270,7 +269,6 @@
     .section-title em {
         color: var(--acid);
         font-style: normal;
-        text-decoration: underline wavy var(--pink);
     }
 
     .services-grid {
@@ -300,6 +298,36 @@
         font-size: clamp(28px, 3vw, 50px);
         line-height: .9;
         text-transform: uppercase;
+    }
+
+    .service {
+        position: relative;
+        padding-right: 150px;
+    }
+
+    .service-image {
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 110px;
+        height: 110px;
+        object-fit: cover;
+        display: block;
+        border: 4px solid #000;
+        flex-shrink: 0;
+    }
+
+    @media (max-width: 700px) {
+        .service {
+            padding-right: 130px;
+        }
+
+        .service-image {
+            width: 96px;
+            height: 96px;
+            right: 16px;
+        }
     }
 
     .service:nth-child(1) { grid-column: span 5; background: var(--acid); }
@@ -832,18 +860,17 @@
     <div class="cursor-shirt"></div>
 </div>
 
-<div class="stamp">★★★★★<br>2.1 / 5 GOOGLE REVIEWS</div>
+<div class="stamp">★★★★★<br>Doporučuje 5 z 5 Tomounů</div>
 
 <header>
     <div class="hero">
         <div class="hero-copy">
-            <h1>PLEŠ<br>& SYN™</h1>
-            <p>Prémiové barber studio pro lidi, kterým už je úplně jedno, co se stane s jejich hlavou.</p>
+            <h1>DaStřih</h1>
+            <p>Prémiové barber studio plné šikovných kadeřníků</p>
             <div class="badges">
-                <span class="badge" style="--r:-3deg">100% LEGÁLNÍ</span>
-                <span class="badge" style="--r:4deg">0% GARANCE</span>
-                <span class="badge" style="--r:-7deg">BARBER OD 2024</span>
-                <span class="badge" style="--r:2deg">FISHEYE CERTIFIED</span>
+                <span class="badge" style="--r:-3deg">67% FREAKY ZAMĚSTNANCŮ</span>
+                <span class="badge" style="--r:4deg">0% STŘÍZLIVÍ</span>
+                <span class="badge" style="--r:2deg">ZALOŽENO <span id="today-date"></span></span>
             </div>
         </div>
 
@@ -859,81 +886,127 @@
 </header>
 
 <section>
-    <h2 class="section-title">CO UMÍME <em>POKAZIT</em></h2>
+    <h2 class="section-title">CO UMÍME <em>VYTVOŘIT</em></h2>
     <div class="services-grid">
         <article class="service" style="--rot:-2deg">
             <h3>Fade</h3>
-            <p>Začneme sebevědomě. Zbytek záleží na štěstí.</p>
+            <p>Trošku vyšší než standart ale</p>
+            <img
+                class="service-image"
+                src="https://placehold.co/800x500?text=FADE"
+                alt="Fade"
+            >
         </article>
+
         <article class="service" style="--rot:3deg">
             <h3>Pleš</h3>
-            <p>Naše signature služba. Prakticky nejbezpečnější možnost.</p>
+            <p>Naše signature služba</p>
+            <img
+                class="service-image"
+                src="https://placehold.co/800x500?text=PLES"
+                alt="Pleš"
+            >
         </article>
+
         <article class="service" style="--rot:-4deg">
-            <h3>Vousy</h3>
-            <p>Symetrie je jen společenský konstrukt.</p>
+            <h3>Nápis do vlasů</h3>
+            <p>Konkrétní text nápisu nechte na nás (pravděpodobně to ale bude velo)</p>
         </article>
+
         <article class="service" style="--rot:1deg">
-            <h3>“Jen konečky”</h3>
-            <p>Řekni poslední sbohem vlasům, které máš rád.</p>
+            <h3>Poslední ohýbač větru</h3>
+            <p>Zaručená klasika. Šipka přidává lepší aerodynamiku.</p>
+            <img
+                class="service-image"
+                src="https://placehold.co/800x500?text=OHYBAC+VETRU"
+                alt="Poslední ohýbač větru"
+            >
         </article>
+
         <article class="service" style="--rot:5deg">
-            <h3>Mystery cut</h3>
-            <p>Neříkáš nic. My taky ne. Pak se podíváš do zrcadla.</p>
+            <h3>Mystery cut s kulturním znakem</h3>
+            <p>Ten si ani Tomoun nechtěl udělat</p>
         </article>
     </div>
 </section>
 
 <section id="team">
-    <h2 class="section-title">NÁŠ <em>TÝM</em></h2>
+    <h2 class="section-title">NÁŠ TÝM</h2>
 
     <div class="team">
-        <article class="person" style="--rot:-3deg; --shadow:#ff2fb3">
+        <article class="person" style="--rot:-1deg; --shadow:#ff2fb3">
             <div class="pic">
                 <img src="employee-1.jpg" alt="Zaměstnanec 1" onerror="this.style.display='none'">
             </div>
-            <h3>ROBERT</h3>
-            <small>CEO / nůžky držel už několikrát</small>
+            <h3>Bob</h3>
+            <small>CEO / vytvořil page takže jsem ceo</small>
         </article>
 
         <article class="person" style="--rot:2deg; --shadow:#d9ff00">
             <div class="pic">
                 <img src="employee-2.jpg" alt="Zaměstnanec 2" onerror="this.style.display='none'">
             </div>
-            <h3>KÁMOŠ #2</h3>
-            <small>Senior fade engineer</small>
+            <h3>Reggie</h3>
+            <small>Head of stříhání / roky praxe / master's degree ve studiích kvalitních haircutů</small>
+        </article>
+
+        <article class="person" style="--rot:-3deg; --shadow:#00eaff">
+            <div class="pic">
+                <img src="employee-4.jpg" alt="Zaměstnanec 3" onerror="this.style.display='none'">
+            </div>
+            <h3>Tomoun</h3>
+            <small>Testovací subjekt všech střihových experimentů / chtěl by být taky master of střih ale nikdo nechce být pokusný králík</small>
         </article>
 
         <article class="person" style="--rot:-1deg; --shadow:#00eaff">
             <div class="pic">
-                <img src="employee-3.jpg" alt="Zaměstnanec 3" onerror="this.style.display='none'">
+                <img src="employee-3.jpg" alt="Zaměstnanec 4" onerror="this.style.display='none'">
             </div>
-            <h3>KÁMOŠ #3</h3>
-            <small>Head of irreversible decisions</small>
+            <h3>Láty</h3>
+            <small>Majitel objektu / vlastní aji skluzavku (nedobrovolně)</small>
+        </article>
+
+        <article class="person" style="--rot:-3deg; --shadow:#00eaff">
+            <div class="pic">
+                <img src="employee-4.jpg" alt="Zaměstnanec 5" onerror="this.style.display='none'">
+            </div>
+            <h3>Mychal</h3>
+            <small>Konkrolór kvality / nositel panáků</small>
+        </article>
+
+        <article class="person" style="--rot:-2deg; --shadow:#00eaff">
+            <div class="pic">
+                <img src="employee-4.jpg" alt="Zaměstnanec 6" onerror="this.style.display='none'">
+            </div>
+            <h3>Předseda</h3>
+            <small>Fotka nebude / nechci žalobu</small>
         </article>
     </div>
 </section>
 
 <section>
-    <h2 class="section-title">FIREMNÍ <em>ČÍSLA</em></h2>
+    <h2 class="section-title">FIREMNÍ HODNOTY</h2>
     <div class="stats">
         <div class="stat"><strong>3</strong><span>spokojené mámy</span></div>
-        <div class="stat"><strong>86%</strong><span>zákazníků nosí čepici</span></div>
-        <div class="stat"><strong>1</strong><span>strojek z Temu</span></div>
-        <div class="stat"><strong>0</strong><span>profesionálních licencí</span></div>
+        <div class="stat"><strong>99%</strong><span>zákazníků nosí čepici</span></div>
+        <div class="stat">
+            <strong id="panos-count">1688566</strong>
+            <span>vypitých panošů</span>
+        </div>
+        <div class="stat"><strong>0,5</strong><span>profesionálních licencí</span></div>
     </div>
 </section>
 
 <section class="cta">
     <div class="cta-box">
-        <h2>REZERVUJ SI CHYBU</h2>
-        <p>Termín, po kterém už nebude cesta zpět.</p>
-        <a class="button" href="mailto:rezervace@example.com">OBJEDNAT SE</a>
+        <h2>REZERVUJ SI PLEŠ</h2>
+        <p>Tohle vem sebou jako platbu předem</p>
+        <a class="button" href="https://www.google.com/aclk?sa=L&ai=DChsSEwjVstmw5_GWAxX8Z5EFHXKJLsYYACICCAEQDhoCbHI&co=1&ase=2&gclid=CjwKCAjw2aPVBhBkEiwA0Cptt2gnLR7mq7VcBmePY_NiXCpfCXfw3IdECE25h1FSI-W1HDmrv6W_TxoCBhYQAvD_BwE&cce=2&category=acrcp_v1_32&sig=AOD64_1VVW7PQ51C3d7CXfY-9CLB8A3C7A&ctype=5&q=&nis=4&ved=2ahUKEwj30dOw5_GWAxWHLRAIHUuFPVoQ5bgDKAB6BAgJEAs&adurl=">OBJEDNAT SE</a>
     </div>
 </section>
 
 <footer>
-    PLEŠ & SYN™ — všechny střihy jsou prováděny na vlastní nebezpečí.
+    DaStřih™
 </footer>
 
 <script>
@@ -968,6 +1041,16 @@
             el.style.transform = "";
         });
     });
+
+    const today = new Date();
+
+    document.getElementById("today-date").textContent =
+        today.toLocaleDateString("cs-CZ");
+
+    const panosCount = document.getElementById("panos-count");
+    setInterval(() => {
+        panosCount.textContent = Number(panosCount.textContent) + 1;
+    }, 5000);
 </script>
 
 </body>
